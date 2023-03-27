@@ -18,7 +18,9 @@ public class AddFolderToZip {
 
     public static void addFolderContentToZip(String fileName, String rootDir) {
         /*
-        adds folder with all the content to zip file
+        adds folder <rootDir> with all the content to zip file <fileName>
+        rootDir is the full path to directory
+        fileName is the full path to file
          */
         Path rootPath = Path.of(rootDir);
         List<Path> files = new ArrayList<>();

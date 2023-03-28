@@ -1,31 +1,41 @@
 package edu.zip;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class AddFolderToZipRecursion {
 
-    public static void main(String[] args) {
-        String folder = "/Users/emptytuple/sandbox/archive_root";
-        File[] rootFolderFiles = new File(folder).listFiles();
+    public static void main(String[] args) throws IOException {
+        String pathString = "/Users/emptytuple/sandbox/archive_root";
 
-        try (ZipOutputStream zout = new ZipOutputStream(new FileOutputStream(folder))) {
-            addFolderToZipRecursion(zout, rootFolderFiles, "");
+        ZipOutputStream zos = new ZipOutputStream(new FileOutputStream("/Users/emptytuple/sandbox/a.zip"));
 
-        } catch (IOException e) {
-            e.getCause();
-        }
+        File[] pathLevelFiles = new File(pathString).listFiles();
+        addFilesToZipRecursion(zos, pathLevelFiles, Path.of(pathString).getFileName().toString() + File.separator);
+
+        zos.close();
+
     }
 
-    public static void addFolderToZipRecursion(ZipOutputStream zout, File[] rootFiles, String base) {
-        for (File file : rootFiles) {
-            if (file.isFile()) {
-                System.out.println(file.toString());
-//                addFolderToZipRecursion(zout, file.listFiles(), base + file.getName() + File.pathSeparator);
+    private static void addFilesToZipRecursion(ZipOutputStream zos, File[] pathLevelFiles, String base) throws IOException {
+        /*
+        adds all the folder content to zip archive excluding the root directory and empty folders;
+        recursion version
+         */
+        for (File f : pathLevelFiles) {
+            if (f.isDirectory()) {
+                addFilesToZipRecursion(zos, f.listFiles(), base + f.getName() + File.separator);
+            }
+            else {
+                ZipEntry ze = new ZipEntry(base + f.getName());
+                System.out.printf("Adding %s to ZIP file \n", f.getName());
+                zos.putNextEntry(ze);
+                BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f.toString()));
+                zos.write(bis.readAllBytes());
+                zos.flush();
+                zos.closeEntry();
             }
         }
     }

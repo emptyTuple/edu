@@ -4,8 +4,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -30,19 +33,38 @@ public class AddFilesFromListToZipUsingVisitor {
          */
         ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFilePath));
         for (String file : files) {
-            if (Files.isRegularFile(Path.of(file))) {
-                ZipEntry ze = new ZipEntry(Path.of(file).getFileName().toString());
+            Path filePath = Path.of(file);
+            if (Files.isRegularFile(filePath)) {
+                ZipEntry ze = new ZipEntry(filePath.getFileName().toString());
                 zos.putNextEntry(ze);
                 FileInputStream fis = new FileInputStream(file);
                 byte[] buffer = new byte[1024];
                 int size = -1;
-                while((size = fis.read(buffer)) !=-1) {
+                while((size = fis.read(buffer)) != -1) {
                     zos.write(buffer, 0, size);
                 }
+                fis.close();
                 zos.closeEntry();
             }
-        }
+            if (Files.isDirectory(filePath)) {
+                Files.walkFileTree(filePath, new SimpleFileVisitor<>() {
+                    @Override
+                    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+                        ZipEntry ze = new ZipEntry(filePath.relativize(dir).toString());
+                        zos.putNextEntry(ze);
+                        zos.closeEntry();
+                        return FileVisitResult.CONTINUE;
+                    }
 
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+            }
+        }
         zos.close();
     }
+
 }

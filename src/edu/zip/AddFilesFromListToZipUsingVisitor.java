@@ -30,7 +30,7 @@ public class AddFilesFromListToZipUsingVisitor {
 
     private static void addFilesToZipVisitor(String zipFilePath, List<String> files) throws IOException {
         /*
-        Adds any files or directories with all the context including empty folders
+        Adds any files and directories with all the context including empty folders
         from List<String> to zip file
          */
         ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFilePath));

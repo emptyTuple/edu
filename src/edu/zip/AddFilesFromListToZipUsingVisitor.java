@@ -23,13 +23,15 @@ public class AddFilesFromListToZipUsingVisitor {
         files.add("/Users/emptytuple/sandbox/forzip/111.txt");
         files.add("/Users/emptytuple/sandbox/forzip/222.txt");
         files.add("/Users/emptytuple/sandbox/forzip/333.txt");
+        files.add("/Users/emptytuple/sandbox/archive_root");
 
         addFilesToZipVisitor(zipFilePath, files);
     }
 
     private static void addFilesToZipVisitor(String zipFilePath, List<String> files) throws IOException {
         /*
-
+        Adds any files or directories with all the context including empty folders
+        from List<String> to zip file
          */
         ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFilePath));
         for (String file : files) {
@@ -48,9 +50,10 @@ public class AddFilesFromListToZipUsingVisitor {
             }
             if (Files.isDirectory(filePath)) {
                 Files.walkFileTree(filePath, new SimpleFileVisitor<>() {
+
                     @Override
                     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                        ZipEntry ze = new ZipEntry(filePath.relativize(dir).toString());
+                        ZipEntry ze = new ZipEntry(filePath.getFileName().resolve(filePath.relativize(dir)) + "/");
                         zos.putNextEntry(ze);
                         zos.closeEntry();
                         return FileVisitResult.CONTINUE;
@@ -58,7 +61,10 @@ public class AddFilesFromListToZipUsingVisitor {
 
                     @Override
                     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-
+                        ZipEntry ze = new ZipEntry(filePath.getFileName().resolve(filePath.relativize(file)).toString());
+                        zos.putNextEntry(ze);
+                        Files.copy(file, zos);
+                        zos.closeEntry();
                         return FileVisitResult.CONTINUE;
                     }
                 });
@@ -66,5 +72,4 @@ public class AddFilesFromListToZipUsingVisitor {
         }
         zos.close();
     }
-
 }

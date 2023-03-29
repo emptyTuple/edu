@@ -1,11 +1,16 @@
 package edu.zip;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+/*
+    Unzip all directories structure including empty directories and all files
+
+ */
 
 public class UnzipFileStreamConsumer {
     public static void main(String[] args) throws IOException {
@@ -36,9 +41,18 @@ public class UnzipFileStreamConsumer {
                 folderPath.mkdir();
             }
             if (!ze.isDirectory()) {
-
+                String fullFileName = zipFileParentDir + ze.getName();
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(zipFile.getInputStream(ze)));
+                     BufferedWriter bw = new BufferedWriter(new FileWriter(fullFileName))) {
+                    String line = null;
+                    while ((line = br.readLine()) != null) {
+                        bw.write(line);
+                    }
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
         }
     }
 }

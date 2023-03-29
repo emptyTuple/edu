@@ -9,7 +9,7 @@ import java.util.zip.ZipFile;
 
 public class ReadZipFiles {
     public static void main(String[] args) throws IOException {
-        ZipFile zf = new ZipFile("/Users/emptytuple/sandbox/zip/archive_root.zip");
+        ZipFile zf = new ZipFile("/Users/emptytuple/sandbox/zip.zip");
         readAllFiles(zf);
     }
 

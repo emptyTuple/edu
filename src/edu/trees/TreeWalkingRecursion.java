@@ -18,6 +18,22 @@ package edu.trees;
  */
 public class TreeWalkingRecursion {
     public static void main(String[] args) {
+        BinaryTree root = new BinaryTree(22,
+                new BinaryTree(13,
+                        new BinaryTree(8,
+                                new BinaryTree(1),
+                                new BinaryTree(11,
+                                        null,
+                                        new BinaryTree(15))),
+                        new BinaryTree(19)),
+                new BinaryTree(33,
+                        new BinaryTree(25,
+                                new BinaryTree(23),
+                                null),
+                        new BinaryTree(50,
+                                new BinaryTree(49),
+                                new BinaryTree(61))));
+
 
     }
 

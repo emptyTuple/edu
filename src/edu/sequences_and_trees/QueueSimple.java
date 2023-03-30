@@ -8,16 +8,16 @@ import java.util.ArrayList;
  для соблюдения дисциплины FIFO.
  */
 
-public class QueueInterfaceRealization implements QueueBase<T> {
-    private ArrayList<T> array = new ArrayList<T>();
+public class QueueSimple implements QueueBase<String> {
+    private ArrayList<String> array = new ArrayList<>();
 
     @Override
-    public void add(T element) {
+    public void add(String element) {
         array.add(element);
     }
 
     @Override
-    public T remove() {
+    public String remove() {
         return array.remove(0);
     }
 

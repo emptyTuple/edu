@@ -8,7 +8,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /*
-    Unzip all directories structure including empty directories and all the files
+    Unzip all directories structure including empty directories and all the files.
+    The root extracted folder name gets the name of the zip file.
 
  */
 

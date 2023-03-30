@@ -1,4 +1,4 @@
-package edu.trees;
+package edu.sequences_and_trees;
 
 
 /*

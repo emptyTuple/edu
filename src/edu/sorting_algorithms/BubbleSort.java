@@ -1,6 +1,5 @@
-package edu.algorithms;
+package edu.sorting_algorithms;
 
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Random;
 

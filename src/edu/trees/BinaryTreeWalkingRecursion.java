@@ -4,6 +4,7 @@ package edu.trees;
 /*
 Класс для представления бинарного дерева.
 Алгоритм рекурсивного обхода дерева в глубину.
+Задача - вычислить сумму всех узлов дерева.
 
 Тестовое дерево:
                       22
@@ -16,7 +17,7 @@ package edu.trees;
                     \
                      15
  */
-public class TreeWalkingRecursion {
+public class BinaryTreeWalkingRecursion {
     public static void main(String[] args) {
         BinaryTree root = new BinaryTree(22,
                 new BinaryTree(13,
@@ -34,7 +35,7 @@ public class TreeWalkingRecursion {
                                 new BinaryTree(49),
                                 new BinaryTree(61))));
 
-
+        System.out.println("All nodes values sum: " + root.sumTreeNodes());
     }
 
     public static class BinaryTree {
@@ -42,14 +43,23 @@ public class TreeWalkingRecursion {
        BinaryTree leftOffspring;
        BinaryTree rightOffspring;
 
-        public BinaryTree(int value) {
-            this.value = value;
-        }
+        public BinaryTree(int value) { this.value = value; }
 
         public BinaryTree(int value, BinaryTree leftOffspring, BinaryTree rightOffspring) {
             this.value = value;
             this.leftOffspring = leftOffspring;
             this.rightOffspring = rightOffspring;
+        }
+
+        public int sumTreeNodes() {
+            int sum = value;
+            if (leftOffspring != null) {
+                sum += leftOffspring.sumTreeNodes();
+            }
+            if (rightOffspring != null) {
+                sum += rightOffspring.sumTreeNodes();
+            }
+            return sum;
         }
     }
 }

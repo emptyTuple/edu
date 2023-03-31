@@ -6,8 +6,9 @@ import java.util.Stack;
 
 /*
 Класс для представления бинарного дерева.
-Рекурсивный обход дерева в глубину с вычислением суммы всех узлов.
-Итеративный обход дерева в глубину с использованием стэка с вычислением суммы узлов.
+Рекурсивный обход дерева в глубину с вычислением суммы всех узлов. Обход реализуется с помощью
+стека рекурсивных вызовов функциию
+Итеративный обход дерева в глубину с использованием стека с вычислением суммы узлов.
 Итеративный обход дерева в ширину с использованием очереди с вычислением суммы узлов.
 
 Тестовое дерево:
@@ -95,11 +96,11 @@ public class BinaryTreeWalking {
                 BinaryTree node = queue.remove();
                 System.out.println(node.value); // увидеть порядок обхода
                 sum += node.value;
-                if (node.rightOffspring != null) {
-                    queue.add(node.rightOffspring);
-                }
                 if (node.leftOffspring != null) {
                     queue.add(node.leftOffspring);
+                }
+                if (node.rightOffspring != null) {
+                    queue.add(node.rightOffspring);
                 }
             }
             return sum;

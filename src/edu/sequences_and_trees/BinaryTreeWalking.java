@@ -1,11 +1,14 @@
 package edu.sequences_and_trees;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 /*
 Класс для представления бинарного дерева.
 Рекурсивный обход дерева в глубину с вычислением суммы всех узлов.
-Итеративный обход дерева с использованием стэка с вычислением суммы узлов.
+Итеративный обход дерева в глубину с использованием стэка с вычислением суммы узлов.
+Итеративный обход дерева в ширину с использованием очереди с вычислением суммы узлов.
 
 Тестовое дерево:
                       22
@@ -37,7 +40,8 @@ public class BinaryTreeWalking {
                                 new BinaryTree(61))));
 
         System.out.println("All nodes values sum: " + root.sumTreeNodesRecursion());
-        System.out.println("All nodes values sum: " + root.sumTreeNodesIteration(root));
+        System.out.println("All nodes values sum: " + root.sumTreeNodesIterationStack(root));
+        System.out.println("All nodes values sum: " + root.sumTreeNodesIterationQueue(root));
 
     }
 
@@ -65,7 +69,7 @@ public class BinaryTreeWalking {
             return sum;
         }
 
-        public int sumTreeNodesIteration(BinaryTree root) {
+        public int sumTreeNodesIterationStack(BinaryTree root) {
             Stack<BinaryTree> stack = new Stack<>();
             stack.push(root);
             int sum = 0;
@@ -78,6 +82,24 @@ public class BinaryTreeWalking {
                 }
                 if (node.leftOffspring != null) {
                     stack.push(node.leftOffspring);
+                }
+            }
+            return sum;
+        }
+
+        public int sumTreeNodesIterationQueue(BinaryTree root) {
+            Queue<BinaryTree> queue = new LinkedList<>();
+            queue.add(root);
+            int sum = 0;
+            while (!queue.isEmpty()) {
+                BinaryTree node = queue.remove();
+                System.out.println(node.value); // увидеть порядок обхода
+                sum += node.value;
+                if (node.rightOffspring != null) {
+                    queue.add(node.rightOffspring);
+                }
+                if (node.leftOffspring != null) {
+                    queue.add(node.leftOffspring);
                 }
             }
             return sum;

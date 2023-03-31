@@ -1,10 +1,11 @@
 package edu.sequences_and_trees;
 
+import java.util.Stack;
 
 /*
 Класс для представления бинарного дерева.
-Алгоритм рекурсивного обхода дерева в глубину.
-Задача - вычислить сумму всех узлов дерева.
+Рекурсивный обход дерева в глубину с вычислением суммы всех узлов.
+Итеративный обход дерева с использованием стэка с вычислением суммы узлов.
 
 Тестовое дерево:
                       22
@@ -17,7 +18,7 @@ package edu.sequences_and_trees;
                     \
                      15
  */
-public class BinaryTreeWalkingRecursion {
+public class BinaryTreeWalking {
     public static void main(String[] args) {
         BinaryTree root = new BinaryTree(22,
                 new BinaryTree(13,
@@ -35,7 +36,9 @@ public class BinaryTreeWalkingRecursion {
                                 new BinaryTree(49),
                                 new BinaryTree(61))));
 
-        System.out.println("All nodes values sum: " + root.sumTreeNodes());
+        System.out.println("All nodes values sum: " + root.sumTreeNodesRecursion());
+        System.out.println("All nodes values sum: " + root.sumTreeNodesIteration(root));
+
     }
 
     public static class BinaryTree {
@@ -51,13 +54,31 @@ public class BinaryTreeWalkingRecursion {
             this.rightOffspring = rightOffspring;
         }
 
-        public int sumTreeNodes() {
+        public int sumTreeNodesRecursion() {
             int sum = value;
             if (leftOffspring != null) {
-                sum += leftOffspring.sumTreeNodes();
+                sum += leftOffspring.sumTreeNodesRecursion();
             }
             if (rightOffspring != null) {
-                sum += rightOffspring.sumTreeNodes();
+                sum += rightOffspring.sumTreeNodesRecursion();
+            }
+            return sum;
+        }
+
+        public int sumTreeNodesIteration(BinaryTree root) {
+            Stack<BinaryTree> stack = new Stack<>();
+            stack.push(root);
+            int sum = 0;
+            while (!stack.isEmpty()) {
+                BinaryTree node = stack.pop();
+                System.out.println(node.value); // увидеть порядок обхода
+                sum += node.value;
+                if (node.rightOffspring != null) {
+                    stack.push(node.rightOffspring);
+                }
+                if (node.leftOffspring != null) {
+                    stack.push(node.leftOffspring);
+                }
             }
             return sum;
         }

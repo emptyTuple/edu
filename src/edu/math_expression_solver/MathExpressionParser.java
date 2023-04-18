@@ -1,5 +1,6 @@
 package edu.math_expression_solver;
 
+import javax.xml.crypto.dsig.spec.XPathType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -65,14 +66,26 @@ public class MathExpressionParser {
                         Matcher matcher = pattern.matcher(exp).region(pos, exp.length());
                         if (matcher.find()) {
                             lexemes.add(new Lexeme(LexemeType.NUMBER, matcher.group()));
+
+                            pos += matcher.group().length();
+                            if (pos >= exp.length()) {
+                                break;
+                            }
+                            c = exp.charAt(pos);
                         }
-                        pos += matcher.group().length();
-                        if (pos >= exp.length()) {
-                            break;
-                        }
-                        c = exp.charAt(pos);
                     }
                     else if (c >= 'a' && c <= 'z') {
+                        Pattern p1 = Pattern.compile("pi(?=[^a-z])");
+                        Pattern p2 = Pattern.compile("e(?=[^a-z])");
+                        Matcher m1 = p1.matcher(exp).region(pos, exp.length());
+                        if (m1.find()) {
+                            lexemes.add(new Lexeme(LexemeType.PI, String.valueOf(Math.PI)));
+                            pos = pos + 2;
+                            if (pos >= exp.length()) {
+                                break;
+                            }
+                            c = exp.charAt(pos);
+                        }
 
                     }
             }

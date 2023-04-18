@@ -1,15 +1,15 @@
 package edu.math_expression_solver;
 
-public class Lexeme {
+class Lexeme {
     LexemeType type;
     String value;
 
-    public Lexeme(LexemeType type, Character value) {
+    Lexeme(LexemeType type, Character value) {
         this.type = type;
         this.value = value.toString();
     }
 
-    public Lexeme(LexemeType type, String value) {
+    Lexeme(LexemeType type, String value) {
         this.type = type;
         this.value = value;
     }

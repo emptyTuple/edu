@@ -17,6 +17,12 @@ FACTOR : '-' FACTOR | NUMBER | '(' EXPRESSION ')' | FUNC '(' ( EXPRESSION ( ',' 
  */
 
 public class MathExpressionParser {
+    private String expression;
+    private LexemeBuffer lexemes;
+
+    public MathExpressionParser(String expression) {
+        this.lexemes = new LexemeBuffer(parseLexemes(expression));
+    }
 
     public List<Lexeme> parseLexemes(String exp) {
         exp = exp.replaceAll(" ", "").toLowerCase();
@@ -65,6 +71,9 @@ public class MathExpressionParser {
                             break;
                         }
                         c = exp.charAt(pos);
+                    }
+                    else if (c >= 'a' && c <= 'z') {
+
                     }
             }
         }

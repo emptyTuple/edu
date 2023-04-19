@@ -74,7 +74,7 @@ public class MathExpressionParser {
                             c = exp.charAt(pos);
                         }
                     }
-                    else if (c == 'p') {
+                    if (c == 'p') {
                         Pattern p1 = Pattern.compile("pi(?=[^a-z])");
                         Matcher m1 = p1.matcher(exp).region(pos, exp.length());
                         if (m1.find()) {
@@ -86,7 +86,7 @@ public class MathExpressionParser {
                             c = exp.charAt(pos);
                         }
                     }
-                    else if(c == 'e') {
+                    if (c == 'e') {
                         Pattern p2 = Pattern.compile("e(?=[^a-z])");
                         Matcher m2 = p2.matcher(exp).region(pos, exp.length());
                         if (m2.find()) {

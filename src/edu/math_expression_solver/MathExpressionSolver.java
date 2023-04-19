@@ -19,7 +19,7 @@ FACTOR : '-' FACTOR | NUMBER | '(' EXPRESSION ')' | FUNC '(' ( EXPRESSION ( ',' 
 
 public class MathExpressionSolver {
 
-    private static HashMap<String, Function> embeddedFunc;
+    private final static HashMap<String, Function> embeddedFunc;
     private String expression;
     private LexemeBuffer lexemes;
 
@@ -155,7 +155,7 @@ public class MathExpressionSolver {
                         if (embeddedFunc.containsKey(sb.toString())) {
                             lexemes.add(new Lexeme(LexemeType.FUNC, sb.toString()));
                         } else {
-                            throw new RuntimeException("Unexpected function name:" + sb);
+                            throw new RuntimeException("Unexpected function name: " + sb);
                         }
                     }
                 }

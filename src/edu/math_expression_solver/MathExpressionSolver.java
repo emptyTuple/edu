@@ -23,6 +23,9 @@ public class MathExpressionSolver {
     private String expression;
     private LexemeBuffer lexemes;
 
+    static {
+        embeddedFunc = addFunction();
+    }
 
     public MathExpressionSolver(String expression) {
         this.lexemes = new LexemeBuffer(parseLexemes(expression));
@@ -137,6 +140,22 @@ public class MathExpressionSolver {
                                 break;
                             }
                             c = exp.charAt(pos);
+                        }
+                    }
+                    if (c >= 'a' && c <= 'z') {
+                        StringBuilder sb = new StringBuilder();
+                        do {
+                            sb.append(c);
+                            pos++;
+                            if (pos >= exp.length()) {
+                                break;
+                            }
+                            c = exp.charAt(pos);
+                        } while (c >= 'a' && c <= 'z');
+                        if (embeddedFunc.containsKey(sb.toString())) {
+                            lexemes.add(new Lexeme(LexemeType.FUNC, sb.toString()));
+                        } else {
+                            throw new RuntimeException("Unexpected function name:" + sb);
                         }
                     }
                 }

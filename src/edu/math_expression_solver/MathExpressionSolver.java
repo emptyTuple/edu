@@ -1,6 +1,5 @@
 package edu.math_expression_solver;
 
-import javax.xml.crypto.dsig.spec.XPathType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -17,11 +16,11 @@ POWER : FACTOR ( '^' FACTOR )*
 FACTOR : '-' FACTOR | NUMBER | '(' EXPRESSION ')' | FUNC '(' ( EXPRESSION ( ',' EXPRESSION )* )? ')' | PI | E
  */
 
-public class MathExpressionParser {
+public class MathExpressionSolver {
     private String expression;
     private LexemeBuffer lexemes;
 
-    public MathExpressionParser(String expression) {
+    public MathExpressionSolver(String expression) {
         this.lexemes = new LexemeBuffer(parseLexemes(expression));
     }
 

@@ -13,8 +13,8 @@ _________________
 EXPRESSION : PLUS_MINUS EOF
 PLUS_MINUS : MUL_DIV ( ( '+' | '-' ) MUL_DIV )*
 MUL_DIV : POWER ( ( '*' | '/' ) POWER )*
-POWER : FACTOR ( '^' FACTOR )+
-FACTOR : '-' FACTOR | NUMBER | '(' EXPRESSION ')' | FUNC '(' ( EXPRESSION ( ',' EXPRESSION )* )? ')'
+POWER : FACTOR ( '^' FACTOR )*
+FACTOR : '-' FACTOR | NUMBER | '(' EXPRESSION ')' | FUNC '(' ( EXPRESSION ( ',' EXPRESSION )* )? ')' | PI | E
  */
 
 public class MathExpressionParser {
@@ -74,9 +74,8 @@ public class MathExpressionParser {
                             c = exp.charAt(pos);
                         }
                     }
-                    else if (c >= 'a' && c <= 'z') {
+                    else if (c == 'p') {
                         Pattern p1 = Pattern.compile("pi(?=[^a-z])");
-                        Pattern p2 = Pattern.compile("e(?=[^a-z])");
                         Matcher m1 = p1.matcher(exp).region(pos, exp.length());
                         if (m1.find()) {
                             lexemes.add(new Lexeme(LexemeType.PI, String.valueOf(Math.PI)));
@@ -86,7 +85,18 @@ public class MathExpressionParser {
                             }
                             c = exp.charAt(pos);
                         }
-
+                    }
+                    else if(c == 'e') {
+                        Pattern p2 = Pattern.compile("e(?=[^a-z])");
+                        Matcher m2 = p2.matcher(exp).region(pos, exp.length());
+                        if (m2.find()) {
+                            lexemes.add(new Lexeme(LexemeType.E, String.valueOf(Math.E)));
+                            pos++;
+                            if (pos >= exp.length()) {
+                                break;
+                            }
+                            c = exp.charAt(pos);
+                        }
                     }
             }
         }

@@ -1,6 +1,7 @@
 package edu.math_expression_solver;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,11 +18,45 @@ FACTOR : '-' FACTOR | NUMBER | '(' EXPRESSION ')' | FUNC '(' ( EXPRESSION ( ',' 
  */
 
 public class MathExpressionSolver {
+
+    private static HashMap<String, Function> embeddedFunc;
     private String expression;
     private LexemeBuffer lexemes;
 
+
     public MathExpressionSolver(String expression) {
         this.lexemes = new LexemeBuffer(parseLexemes(expression));
+    }
+
+    public interface Function {
+        double apply(List<Double> args);
+    }
+
+    public static HashMap<String, Function> addFunction() {
+        HashMap<String, Function> functions = new HashMap<>();
+
+        functions.put("sin", args -> {
+            if (args.size() != 1) {
+                throw new IllegalArgumentException("Wrong argument amount for function 'SIN'");
+            }
+            return (double) Math.sin(args.get(0));
+        });
+
+        functions.put("cos", args -> {
+            if (args.size() != 1) {
+                throw new IllegalArgumentException("Wrong argument amount for function 'COS'");
+            }
+            return (double) Math.cos(args.get(0));
+        });
+
+        functions.put("tan", args -> {
+            if (args.size() != 1) {
+                throw new IllegalArgumentException("Wrong argument amount for function 'TAN'");
+            }
+            return (double) Math.tan(args.get(0));
+        });
+
+        return functions;
     }
 
     public List<Lexeme> parseLexemes(String exp) {
@@ -31,35 +66,42 @@ public class MathExpressionSolver {
         while (pos < exp.length()) {
             char c = exp.charAt(pos);
             switch (c) {
-                case '+':
+                case '+' -> {
                     lexemes.add(new Lexeme(LexemeType.PLUS, c));
                     pos++;
                     continue;
-                case '-':
+                }
+                case '-' -> {
                     lexemes.add(new Lexeme(LexemeType.MINIS, c));
                     pos++;
                     continue;
-                case '*':
+                }
+                case '*' -> {
                     lexemes.add(new Lexeme(LexemeType.MUL, c));
                     pos++;
                     continue;
-                case '/':
+                }
+                case '/' -> {
                     lexemes.add(new Lexeme(LexemeType.DIV, c));
                     pos++;
                     continue;
-                case '(':
+                }
+                case '(' -> {
                     lexemes.add(new Lexeme(LexemeType.LEFT_BRACKET, c));
                     pos++;
                     continue;
-                case ')':
+                }
+                case ')' -> {
                     lexemes.add(new Lexeme(LexemeType.RIGHT_BRACKET, c));
                     pos++;
                     continue;
-                case '^':
+                }
+                case '^' -> {
                     lexemes.add(new Lexeme(LexemeType.POWER, c));
                     pos++;
                     continue;
-                default:
+                }
+                default -> {
                     if (c <= '9' && c >= '0') {
                         Pattern pattern = Pattern.compile("\\d+(?:\\.\\d+)?");
                         Matcher matcher = pattern.matcher(exp).region(pos, exp.length());
@@ -97,6 +139,7 @@ public class MathExpressionSolver {
                             c = exp.charAt(pos);
                         }
                     }
+                }
             }
         }
         lexemes.add(new Lexeme(LexemeType.EOF, ""));

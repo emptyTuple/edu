@@ -37,21 +37,21 @@ public class MathExpressionSolver {
 
         functions.put("sin", args -> {
             if (args.size() != 1) {
-                throw new IllegalArgumentException("Wrong argument amount for function 'SIN'");
+                throw new IllegalArgumentException("Wrong arguments amount for function 'SIN'");
             }
             return (double) Math.sin(args.get(0));
         });
 
         functions.put("cos", args -> {
             if (args.size() != 1) {
-                throw new IllegalArgumentException("Wrong argument amount for function 'COS'");
+                throw new IllegalArgumentException("Wrong arguments amount for function 'COS'");
             }
             return (double) Math.cos(args.get(0));
         });
 
         functions.put("tan", args -> {
             if (args.size() != 1) {
-                throw new IllegalArgumentException("Wrong argument amount for function 'TAN'");
+                throw new IllegalArgumentException("Wrong arguments amount for function 'TAN'");
             }
             return (double) Math.tan(args.get(0));
         });

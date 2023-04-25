@@ -14,7 +14,7 @@ EXPRESSION : PLUS_MINUS EOF
 PLUS_MINUS : MUL_DIV ( ( '+' | '-' ) MUL_DIV )*
 MUL_DIV : POWER ( ( '*' | '/' ) POWER )*
 POWER : FACTOR ( '^' FACTOR )*
-FACTOR : '-' FACTOR | NUMBER | '(' EXPRESSION ')' | FUNC '(' ( EXPRESSION ( ',' EXPRESSION )* )? ')' | PI | E
+FACTOR : '-' FACTOR | NUMBER | '(' EXPRESSION ')' | FUNC '(' ( EXPRESSION ( ',' EXPRESSION )* )? ')'
  */
 
 public class MathExpressionSolver {
@@ -164,4 +164,50 @@ public class MathExpressionSolver {
         lexemes.add(new Lexeme(LexemeType.EOF, ""));
         return lexemes;
     }
+
+    public static double factor(LexemeBuffer lexemes) {
+        Lexeme lexeme = lexemes.next();
+        double value;
+        switch (lexeme.type) {
+            case NUMBER:
+                return Double.parseDouble(lexeme.value);
+            case MINIS:
+                value = factor(lexemes);
+                return - value;
+            case FUNC:
+                lexemes.prev();
+                return func(lexemes);
+            case LEFT_BRACKET:
+                value = expr(lexemes);
+                lexemes.next();
+                if (lexeme.type != LexemeType.RIGHT_BRACKET) {
+                    throw new IllegalArgumentException("Unexpected token => " +
+                            lexeme.value + "at position: " + lexemes.getPos());
+                }
+                return value;
+            default:
+                throw new IllegalArgumentException("Unexpected token => " +
+                        lexeme.value + "at position: " + lexemes.getPos());
+        }
+    }
+
+    private static double expr(LexemeBuffer lexemes) {
+        return 0f;
+    }
+
+    private static double plusminis(LexemeBuffer lexemes) {
+    }
+
+    private static double muldiv(LexemeBuffer lexemes) {
+        return 0f;
+    }
+
+    private static double pow(LexemeBuffer lexemes) {
+        return 0f;
+    }
+
+    private static double func(LexemeBuffer lexemes) {
+        return 0f;
+    }
+
 }

@@ -10,10 +10,12 @@ class LexemeBuffer {
         this.lexemes = lexemes;
     }
 
+    // возвращаем позицию и передвигаем указатель
     Lexeme next() {
-        return lexemes.get(pos);
+        return lexemes.get(pos++);
     }
 
+    // передвигаем указатель наад
     void prev() {
         pos--;
     }

@@ -75,7 +75,7 @@ public class MathExpressionSolver {
                     continue;
                 }
                 case '-' -> {
-                    lexemes.add(new Lexeme(LexemeType.MINIS, c));
+                    lexemes.add(new Lexeme(LexemeType.MINUS, c));
                     pos++;
                     continue;
                 }
@@ -171,7 +171,7 @@ public class MathExpressionSolver {
         switch (lexeme.type) {
             case NUMBER:
                 return Double.parseDouble(lexeme.value);
-            case MINIS:
+            case MINUS:
                 value = factor(lexemes);
                 return - value;
             case FUNC:
@@ -191,18 +191,44 @@ public class MathExpressionSolver {
         }
     }
 
-    private static double expr(LexemeBuffer lexemes) {
-        return 0f;
-    }
-
-    private static double plusminis(LexemeBuffer lexemes) {
+    private static double pow(LexemeBuffer lexemes) {
+        double value = factor(lexemes);
+        while (true) {
+            Lexeme lexeme = lexemes.next();
+            switch (lexeme.type) {
+                case POWER:
+                    value = Math.pow(value, factor(lexemes));
+                    break;
+                default:
+                    lexemes.prev();
+                    return value;
+            }
+        }
     }
 
     private static double muldiv(LexemeBuffer lexemes) {
+        double value = pow(lexemes);
+        while (true) {
+            Lexeme lexeme = lexemes.next();
+            switch (lexeme.type) {
+                case MUL:
+                    value *= pow(lexemes);
+                    break;
+                case DIV:
+                    value /= pow(lexemes);
+                    break;
+                default:
+                    lexemes.prev();
+                    return value;
+            }
+        }
+    }
+
+    private static double plusminis(LexemeBuffer lexemes) {
         return 0f;
     }
 
-    private static double pow(LexemeBuffer lexemes) {
+    private static double expr(LexemeBuffer lexemes) {
         return 0f;
     }
 
